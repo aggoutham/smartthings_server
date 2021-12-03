@@ -21,9 +21,11 @@ def webhook():
 
 @app.route('/fuzzer', methods=['POST'])
 def fuzzer():
-    form = request.form
-    my_connector.update_state(form['command'])
-    return ''
+    data = request.get_json(force=True)
+    print('request:')
+    print(data)
+    resObj = my_connector.update_state(data)
+    return resObj
 
 # run server
 if __name__ == "__main__":

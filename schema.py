@@ -139,18 +139,20 @@ class MyConnector(SchemaConnector):
         print(states)
         print('response from server:')
         print(res.text)
-        return
+        return res.text
     
     # change device state
-    def update_state(self):
-        # my_devices.my_switch.states[0].value = command
-        self.state_callback_handler()
-        return
+    def update_state(self,reqObj):
+        request_id = reqObj["headers"]["requestId"]
+        devices = reqObj["devices"]
+        resObj = self.command_handler(devices,request_id,self.callback_authentication['accessToken'])
+        resText = self.state_callback_handler()
+        return resText
 
     # Behaviours for each command
     def handleIndividualCommands(self, oldStateObj,command,component,capability,arguments):
         newStateObj = oldStateObj
-        if "st.switch" in capability:
+        if "st.switch" == capability:
             newStateObj = BaseState(
                 capability=capability,
                 attribute='switch',
@@ -158,7 +160,7 @@ class MyConnector(SchemaConnector):
                 unit=None,
                 component="main"
             )
-        elif "st.contactSensor" in capability:
+        elif "st.contactSensor" == capability:
             newStateObj = BaseState(
                 capability=capability,
                 attribute='contact',
@@ -166,12 +168,51 @@ class MyConnector(SchemaConnector):
                 unit=None,
                 component="main"
             )
-        elif "st.temperatureMeasurement" in capability:
+        elif "st.temperatureMeasurement" == capability:
             newStateObj = BaseState(
                 capability=capability,
                 attribute='temperature',
                 value=command,
                 unit="C",
+                component="main"
+            )
+        elif "st.battery" == capability:
+            newStateObj = BaseState(
+                capability=capability,
+                attribute='battery',
+                value=command,
+                unit="%",
+                component="main"
+            )
+        elif "st.switchLevel" == capability:
+            newStateObj = BaseState(
+                capability=capability,
+                attribute='level',
+                value=arguments[0],
+                unit=None,
+                component="main"
+            )
+        elif "st.colorControl" == capability:
+            if command == "setColor":
+                attribute = "color"
+                if oldStateObj.attribute != "color":
+                    return oldStateObj
+                value = str(arguments[0])
+            elif command == "setHue":
+                attribute = "hue"
+                if oldStateObj.attribute != "hue":
+                    return oldStateObj
+                value = (arguments[0])
+            elif command == "setSaturation":
+                attribute = "saturation"
+                if oldStateObj.attribute != "saturation":
+                    return oldStateObj
+                value = (arguments[0])
+            newStateObj = BaseState(
+                capability=capability,
+                attribute=attribute,
+                value=value,
+                unit=None,
                 component="main"
             )
         return newStateObj
