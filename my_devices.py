@@ -34,4 +34,31 @@ light_2.set_state(
     'switch',
     'on')
 
-declared_devices = [light_1, light_2]
+temp_sensor_1 = SchemaDevice(
+    'temp_sensor_1',
+    'temp_sensor_1',
+    'c2c-contact',
+    '003')
+temp_sensor_1.set_mn(
+    'Temp-Contact Sensor Manufacturer',
+    'Model T1')
+temp_sensor_1.set_context(
+    'Living',
+    ['Temperature Sensors'],
+    ['thermostat'])
+temp_sensor_1.set_state(
+    'st.contactSensor',
+    'contact',
+    'open')
+temp_sensor_1.set_state(
+    'st.temperatureMeasurement',
+    'temperature',
+    35,
+    'C')
+temp_sensor_1.set_state(
+    'st.battery',
+    'battery',
+    100)
+
+
+declared_devices = [light_1, light_2, temp_sensor_1]

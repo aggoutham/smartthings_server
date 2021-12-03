@@ -4,6 +4,7 @@ from stschema import SchemaConnector, SchemaDevice
 from stschema.schema_response.responses import StateResponse, StateRefreshResponseSchema
 from stschema.util.base_modules.base_response import BaseResponse
 from apscheduler.schedulers.background import BackgroundScheduler
+from stschema.util.base_modules import BaseState
 import my_devices
 
 # Credentials_For_Yilu's_Project
@@ -41,9 +42,7 @@ class MyConnector(SchemaConnector):
         return self.state_refresh_response(filtered_devices, request_id)
 
     def command_handler(self, devices, request_id, access_token):
-        
         filteredDevices = []
-
         for reqObj in devices:
             device_id = reqObj['externalDeviceId']
             commands = reqObj['commands']
@@ -52,18 +51,17 @@ class MyConnector(SchemaConnector):
                 component = commandObj['component']
                 capability = commandObj['capability']
                 arguments = commandObj['arguments']
-
                 for my_device in my_active_devices:
                     if device_id == my_device.external_device_id:
                         existing_states = list(my_device.states)
                         my_device.states = []
-                        my_device.set_state(
-                            capability,
-                            'switch',
-                            command
-                        )
+                        for stateObj in existing_states:
+                            if stateObj.capability == capability:
+                                updatedStateObj = self.handleIndividualCommands(stateObj,command,component,capability,arguments)
+                                my_device.states.append(updatedStateObj)
+                            else:
+                                my_device.states.append(stateObj)
                         filteredDevices.append(my_device)
-        
         return self.command_response(filteredDevices, request_id)
 
     def interaction_result_handler(self, interaction_result: dict, origin: str):
@@ -126,7 +124,7 @@ class MyConnector(SchemaConnector):
     # send device state to server
     def state_callback_handler(self):
         response = StateResponse(
-            devices = my_devices.declared_devices,
+            devices = my_active_devices,
             interaction_type = 'stateCallback',
             request_id = str(uuid4())               
         )
@@ -144,7 +142,38 @@ class MyConnector(SchemaConnector):
         return
     
     # change device state
-    def update_state(self, command):
-        my_devices.my_switch.states[0].value = command
+    def update_state(self):
+        # my_devices.my_switch.states[0].value = command
         self.state_callback_handler()
         return
+
+    # Behaviours for each command
+    def handleIndividualCommands(self, oldStateObj,command,component,capability,arguments):
+        newStateObj = oldStateObj
+        if "st.switch" in capability:
+            newStateObj = BaseState(
+                capability=capability,
+                attribute='switch',
+                value=command,
+                unit=None,
+                component="main"
+            )
+        elif "st.contactSensor" in capability:
+            newStateObj = BaseState(
+                capability=capability,
+                attribute='contact',
+                value=command,
+                unit=None,
+                component="main"
+            )
+        elif "st.temperatureMeasurement" in capability:
+            newStateObj = BaseState(
+                capability=capability,
+                attribute='temperature',
+                value=command,
+                unit="C",
+                component="main"
+            )
+        return newStateObj
+
+    
