@@ -215,6 +215,14 @@ class MyConnector(SchemaConnector):
                 unit=None,
                 component="main"
             )
+        elif "st.fanSpeed" == capability:
+            newStateObj = BaseState(
+                capability=capability,
+                attribute='fanSpeed',
+                value=arguments[0],
+                unit=None,
+                component="main"
+            )
         return newStateObj
 
     

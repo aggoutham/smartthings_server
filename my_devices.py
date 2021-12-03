@@ -93,5 +93,25 @@ color_bulb_1.set_state(
     'saturation',
     65)
 
+fan_control_1 = SchemaDevice(
+    'fan_control_1',
+    'fan_control_1',
+    'c2c-fan-controller-4speed',
+    '005')
+fan_control_1.set_mn(
+    'Fan Control Manufacturer',
+    'Model F1')
+fan_control_1.set_context(
+    'Living',
+    ['All Fans'],
+    ['fan'])
+fan_control_1.set_state(
+    'st.switch',
+    'switch',
+    'on')
+fan_control_1.set_state(
+    'st.fanSpeed',
+    'fanSpeed',
+    4)
 
-declared_devices = [switch_1, switch_2, temp_sensor_1, color_bulb_1]
+declared_devices = [switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]
