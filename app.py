@@ -29,4 +29,5 @@ def fuzzer():
 
 # run server
 if __name__ == "__main__":
+    my_connector.refresh_token()
     app.run(debug=True, port=int(os.environ.get("PORT", 30001)))

@@ -6,6 +6,7 @@ from stschema.util.base_modules.base_response import BaseResponse
 from apscheduler.schedulers.background import BackgroundScheduler
 from stschema.util.base_modules import BaseState
 import my_devices
+import json
 
 # Credentials_For_Yilu's_Project
 # client_id = ""
@@ -16,6 +17,7 @@ client_id = ""
 client_secret = ""
 
 my_active_devices = my_devices.declared_devices
+placeholder = "initial"
 
 # scheduler init
 scheduler = BackgroundScheduler()
@@ -91,13 +93,42 @@ class MyConnector(SchemaConnector):
         print('response from server:')
         print(res.text)
         self.callback_authentication = res.json()['callbackAuthentication']
+        # save the token information in a file
+        with open("/home/pi/accessToken.json","w") as f1:
+            f1.write(json.dumps(self.callback_authentication))
+        with open("/home/pi/callbackUrls.json","w") as f2:
+            f2.write(json.dumps(self.callback_urls))
         # schedule token refresh
-        scheduler.add_job(self.refresh_token, 'interval', seconds=self.callback_authentication['expiresIn'])
-        # scheduler.add_job(self.refresh_token, 'interval', seconds=60)
+        global placeholder
+        placeholder = "callback"
+        # scheduler.add_job(self.refresh_token, 'interval', seconds=self.callback_authentication['expiresIn'])
+        scheduler.add_job(self.refresh_token, 'interval', seconds=60)
         scheduler.start()
         return
 
     def refresh_token(self):
+        rf = ""
+        if placeholder == "initial":
+            #read refersh token from file
+            try:
+                with open("/home/pi/accessToken.json","r") as f1:
+                    fileText = json.load(f1)
+                    rf = fileText["refreshToken"]
+                    self.callback_authentication = fileText
+            except Exception as e:
+                print(e)
+                print("Access Token file not present in /home/pi/")
+            # read callback urls file
+            try:
+                with open("/home/pi/callbackUrls.json","r") as f2:
+                    fileText = json.load(f2)
+                    self.callback_urls = fileText
+            except Exception as e:
+                print(e)
+                print("Callback Urls file not present in /home/pi/")
+        elif placeholder == "callback":
+            rf = self.callback_authentication['refreshToken']
+
         # access token request
         token_request = {
             "headers": {
@@ -108,17 +139,22 @@ class MyConnector(SchemaConnector):
             },
             "callbackAuthentication": {
                 "grantType": "refresh_token",
-                "refreshToken": self.callback_authentication['refreshToken'],
+                "refreshToken": rf,
                 "clientId": client_id,
                 "clientSecret": client_secret
             }
         }
-        res = requests.post(self.callback_urls['oauthToken'], json=token_request)
+        res = requests.post(self.callback_urls["oauthToken"], json=token_request)
         print('request access token:')
         print(token_request)
         print('response from server:')
         print(res.text)
         self.callback_authentication = res.json()['callbackAuthentication']
+        # save the token information in a file
+        with open("/home/pi/accessToken.json","w") as f1:
+            f1.write(json.dumps(self.callback_authentication))
+        with open("/home/pi/callbackUrls.json","w") as f2:
+            f2.write(json.dumps(self.callback_urls))
         return
 
     # send device state to server
@@ -137,6 +173,7 @@ class MyConnector(SchemaConnector):
         res = requests.post(self.callback_urls['stateCallback'], json=states)
         print('state callback:')
         print(states)
+        print(self.callback_urls['stateCallback'])
         print('response from server:')
         print(res.text)
         return res.text
