@@ -1,4 +1,4 @@
-import requests
+import requests, json, logging
 from uuid import uuid4
 from stschema import SchemaConnector, SchemaDevice
 from stschema.schema_response.responses import StateResponse, StateRefreshResponseSchema
@@ -6,18 +6,19 @@ from stschema.util.base_modules.base_response import BaseResponse
 from apscheduler.schedulers.background import BackgroundScheduler
 from stschema.util.base_modules import BaseState
 import my_devices
-import json
 
 # Credentials_For_Yilu's_Project
-# client_id = ""
-# client_secret = ""
-
-# Credentials_For_Goutham's_Project
 client_id = ""
 client_secret = ""
 
+# Credentials_For_Goutham's_Project
+# client_id = ""
+# client_secret = ""
+
 my_active_devices = my_devices.declared_devices
 placeholder = "initial"
+logging.basicConfig(filename='fuzzer.log', level=logging.CRITICAL)
+logging.critical('Server starts')
 
 # scheduler init
 scheduler = BackgroundScheduler()
@@ -57,12 +58,17 @@ class MyConnector(SchemaConnector):
                     if device_id == my_device.external_device_id:
                         existing_states = list(my_device.states)
                         my_device.states = []
+                        check = 0
                         for stateObj in existing_states:
                             if stateObj.capability == capability:
+                                check = 1
                                 updatedStateObj = self.handleIndividualCommands(stateObj,command,component,capability,arguments)
                                 my_device.states.append(updatedStateObj)
                             else:
                                 my_device.states.append(stateObj)
+                        if check == 0:
+                            updatedStateObj = self.handleIndividualCommands(stateObj,command,component,capability,arguments)
+                            my_device.states.append(updatedStateObj)
                         filteredDevices.append(my_device)
         return self.command_response(filteredDevices, request_id)
 
@@ -101,19 +107,17 @@ class MyConnector(SchemaConnector):
         # schedule token refresh
         global placeholder
         placeholder = "callback"
-        # scheduler.add_job(self.refresh_token, 'interval', seconds=self.callback_authentication['expiresIn'])
-        scheduler.add_job(self.refresh_token, 'interval', seconds=60)
+        scheduler.add_job(self.refresh_token, 'interval', seconds=self.callback_authentication['expiresIn'])
+        # scheduler.add_job(self.refresh_token, 'interval', seconds=60)
         scheduler.start()
         return
 
     def refresh_token(self):
-        rf = ""
         if placeholder == "initial":
             #read refersh token from file
             try:
                 with open("/home/pi/accessToken.json","r") as f1:
                     fileText = json.load(f1)
-                    rf = fileText["refreshToken"]
                     self.callback_authentication = fileText
             except Exception as e:
                 print(e)
@@ -127,7 +131,7 @@ class MyConnector(SchemaConnector):
                 print(e)
                 print("Callback Urls file not present in /home/pi/")
         elif placeholder == "callback":
-            rf = self.callback_authentication['refreshToken']
+            pass
 
         # access token request
         token_request = {
@@ -139,7 +143,7 @@ class MyConnector(SchemaConnector):
             },
             "callbackAuthentication": {
                 "grantType": "refresh_token",
-                "refreshToken": rf,
+                "refreshToken": self.callback_authentication['refreshToken'],
                 "clientId": client_id,
                 "clientSecret": client_secret
             }
@@ -174,8 +178,12 @@ class MyConnector(SchemaConnector):
         print('state callback:')
         print(states)
         print(self.callback_urls['stateCallback'])
+        logging.critical('state callback:')
+        logging.critical(states)
         print('response from server:')
         print(res.text)
+        logging.critical('response from server:')
+        logging.critical(res.text)
         return res.text
     
     # change device state
