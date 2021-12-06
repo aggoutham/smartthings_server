@@ -2,7 +2,7 @@ import requests, sys
 from uuid import uuid4
 from random import randint, uniform
 
-fuzzing_url = ""
+fuzzing_url = "https://iotpi.aplayerscreed.com/vdev_py/fuzzer"
 
 reqObj = {}
 reqObj["headers"] = {}
@@ -73,7 +73,7 @@ def main():
     res = hiturl(req)
     # loop call
     for i in range(1, 100):
-        req["devices"][0]["commands"][0]["command"] = uniform(-460, 10000)
+        req["devices"][0]["commands"][0]["command"] = randint(-460, 10000)
         res = hiturl(req)
 
     # st.battery
