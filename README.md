@@ -5,8 +5,11 @@ Steps to instantiate the environment :-
 2. During the set up, enter correct webhook URL in the workspace project. Eg :- "https://iotpi.aplayerscreed.com/smartthings/" is where our Raspberry Pi (Port 30001) is hosted. Enter mocking OAuth server details to fake OAuth flow -
 
 Client Id: dummy-client-id
+
 client Secret: dummy-client-secret
+
 Auth URI : https://mock-oauth2-server.glitch.me/o/oauth2/v2/auth
+
 Token URI: https://mock-oauth2-server.glitch.me/oauth2/v4/token
 
 3. Once the setup is completed, Samsung Smartthings will provide a secret "client_id" and "client_secret" for authentication purposes. Enter this information in "schema.py" script.
