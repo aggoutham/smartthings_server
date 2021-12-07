@@ -28,12 +28,12 @@ class MyConnector(SchemaConnector):
     def __init__(self, *opts):
         SchemaConnector.__init__(self, enable_logger=True)
 
+    #Initial Discover Request Handler for Smartthings
     def discovery_handler(self, request_id, access_token):
-        # Device definition using the SchemaDevice class
-        
         my_active_devices = my_devices.declared_devices
         return self.discovery_response(my_active_devices, request_id)
 
+    #Returns latest state of all devices from in-app memory
     def state_refresh_handler(self, devices, request_id, access_token):
         # Collection of devices
         filtered_devices = []
@@ -44,6 +44,7 @@ class MyConnector(SchemaConnector):
                     filtered_devices.append(my_d)
         return self.state_refresh_response(filtered_devices, request_id)
 
+    #Filters commands individually from the request and uses handleIndividualCommands method to cater to them
     def command_handler(self, devices, request_id, access_token):
         filteredDevices = []
         for reqObj in devices:
@@ -72,10 +73,12 @@ class MyConnector(SchemaConnector):
                         filteredDevices.append(my_device)
         return self.command_response(filteredDevices, request_id)
 
+    #To Do. All other interactions
     def interaction_result_handler(self, interaction_result: dict, origin: str):
         print(interaction_result, origin)
         pass
 
+    #Get access token after oauth callback
     def grant_callback_access(self, callback_authentication: dict, callback_urls):
         self.callback_urls = callback_urls
         # access token request
@@ -112,6 +115,7 @@ class MyConnector(SchemaConnector):
         scheduler.start()
         return
 
+    #Refresh access token regularly
     def refresh_token(self):
         if placeholder == "initial":
             #read refersh token from file

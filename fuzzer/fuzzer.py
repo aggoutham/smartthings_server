@@ -18,18 +18,20 @@ sampleCommandObj["capability"] = ""
 sampleCommandObj["command"] = ""
 sampleCommandObj["arguments"] = []
 
+### Sending requesto to Flask App
 def hiturl(payload):
     res = requests.post(fuzzing_url, json=payload)
     print('response from server:')
     print(res.text)
     return res.text
 
-#### Loop through different test cases
+#### Loop through different test cases for different capabilities
 def main():
     print("Starting Fuzzer...")
 
     # fan_control_1
     # set fanspeed
+    # Fuzz fanSpeed Capability
     req = dict(reqObj)
     req["devices"][0]["externalDeviceId"] = "fan_control_1"
     commandObj = dict(sampleCommandObj)
@@ -47,6 +49,7 @@ def main():
 
     # temp_sensor_1
     # st.contactSensor
+    # Fuzz contact sensor capability
     req = dict(reqObj)
     req["devices"][0]["externalDeviceId"] = "temp_sensor_1"
     commandObj = dict(sampleCommandObj)
@@ -63,6 +66,7 @@ def main():
         res = hiturl(req)
     
     # st.temperatureMeasurement
+    # Fuzz temperature sensor capability
     req = dict(reqObj)
     req["devices"][0]["externalDeviceId"] = "temp_sensor_1"
     commandObj = dict(sampleCommandObj)
@@ -77,6 +81,7 @@ def main():
         res = hiturl(req)
 
     # st.battery
+    # Fuzz battery level capability
     req = dict(reqObj)
     req["devices"][0]["externalDeviceId"] = "temp_sensor_1"
     commandObj = dict(sampleCommandObj)
@@ -92,6 +97,7 @@ def main():
 
     # switch_1
     # st.switch
+    # Fuzz switch capability
     req = dict(reqObj)
     req["devices"][0]["externalDeviceId"] = "switch_1"
     commandObj = dict(sampleCommandObj)
@@ -109,6 +115,7 @@ def main():
 
     # color_bulb_1
     # st.switchLevel
+    # Fuzz dimmer level capability
     req = dict(reqObj)
     req["devices"][0]["externalDeviceId"] = "color_bulb_1"
     commandObj = dict(sampleCommandObj)
@@ -123,6 +130,7 @@ def main():
         res = hiturl(req)
 
     # st.colorControl
+    # Fuzz color control capability by setting hue and saturation individually
     req = dict(reqObj)
     req["devices"][0]["externalDeviceId"] = "color_bulb_1"
     commandObj = dict(sampleCommandObj)

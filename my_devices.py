@@ -1,5 +1,10 @@
 from stschema import SchemaDevice
 
+#With the help of Smartthings Python SDK module, following are the defined
+#set of virtual devices. Their states are set for the initial set-up required
+#for discoveryRequest call.
+
+#Switch 1 has only switch capability
 switch_1 = SchemaDevice(  # Device info
     'switch_1',
     'switch_1',
@@ -17,6 +22,7 @@ switch_1.set_state(
     'switch',
     'on')
     
+#Switch 2 has only switch capability
 switch_2 = SchemaDevice(  # Device info
     'switch_2',
     'switch_2',
@@ -34,6 +40,7 @@ switch_2.set_state(
     'switch',
     'on')
 
+#Temp Sensor 1 can provide readings for Temperature Measurement, Contact Sensing and Battery level.
 temp_sensor_1 = SchemaDevice(
     'temp_sensor_1',
     'temp_sensor_1',
@@ -60,6 +67,7 @@ temp_sensor_1.set_state(
     'battery',
     100)
 
+#Color bulb 1 has a switch, a color control and a dimmer level setting.
 color_bulb_1 = SchemaDevice(
     'color_bulb_1',
     'color_bulb_1',
@@ -93,6 +101,7 @@ color_bulb_1.set_state(
     'saturation',
     65)
 
+#Fan Control 1 has a switch capability and a fanSpeed setting for controlling the speed of a virtual fan.
 fan_control_1 = SchemaDevice(
     'fan_control_1',
     'fan_control_1',
@@ -114,4 +123,5 @@ fan_control_1.set_state(
     'fanSpeed',
     4)
 
+#Exporting all the devices in a variable for in-memory operations
 declared_devices = [switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]
