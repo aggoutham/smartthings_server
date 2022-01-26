@@ -23,15 +23,15 @@ d1_c2c_arrival_2 = SchemaDevice(
     '001')
 d1_c2c_arrival_2.set_mn(
     'C2C Arrival 2 type - Presence, Battery, Tone',
-    'Model X1')
+    'Model D001')
 d1_c2c_arrival_2.set_context(
     'Living',
-    ['Presence'],
+    ['Presence Sensors'],
     ['presence-sensor'])
 d1_c2c_arrival_2.set_state(
     'st.presenceSensor',
     'presence',
-    'present')
+    'not present')
 d1_c2c_arrival_2.set_state(
     'st.battery',
     'battery',
@@ -41,6 +41,29 @@ d1_c2c_arrival_2.set_state(
 #     'st.tone',
 #     'switch',
 #     'on')
+
+#Official c2c-button-4 Device
+d2_c2c_button_4 = SchemaDevice(
+    'd2_c2c_button_4',
+    'd2_c2c_button_4',
+    'c2c-button-4',
+    '002')
+d2_c2c_button_4.set_mn(
+    'C2C Button 4 type - Button, Holdable Button, Battery',
+    'Model D002')
+d2_c2c_button_4.set_context(
+    'Living',
+    ['Buttons'],
+    ['switch'])
+d2_c2c_button_4.set_state(
+    'st.button',
+    'button',
+    'held')
+#Button is holdable
+d2_c2c_button_4.set_state(
+    'st.battery',
+    'battery',
+    100)
 
 #Switch 1 has only switch capability
 switch_1 = SchemaDevice(  # Device info
@@ -162,4 +185,4 @@ fan_control_1.set_state(
     4)
 
 #Exporting all the devices in a variable for in-memory operations
-declared_devices = [d1_c2c_arrival_2, switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]
+declared_devices = [d1_c2c_arrival_2, d2_c2c_button_4, switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]
