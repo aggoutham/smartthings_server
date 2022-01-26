@@ -32,4 +32,4 @@ def fuzzer():
 # Begin Flask Server.
 if __name__ == "__main__":
     my_connector.refresh_token()
-    app.run(debug=True, port=int(os.environ.get("PORT", 30002)))
+    app.run(debug=True, port=int(os.environ.get("PORT", 30001)))

@@ -1,15 +1,57 @@
 from stschema import SchemaDevice
 
+# external_device_id=None,
+# friendly_name=None,
+# device_handler_type=None,
+# device_unique_id=None,
+# device_cookie=None,
+# REFER TO :- https://developer-preview.smartthings.com/docs/devices/cloud-connected/device-handler-types
+# REFER TO :- https://developer-preview.smartthings.com/docs/devices/capabilities/capabilities-reference/
+
+# room_name, groups, categories
+# REFER TO :- https://developer-preview.smartthings.com/docs/devices/device-profiles [CATEGORIES]
+
+# def set_state(self, capability, attribute, value, unit=None, component="main")
+# SET STATE : REFER TO :- https://developer-preview.smartthings.com/docs/devices/capabilities/capabilities-reference/
+
+
 #With the help of Smartthings Python SDK module, following are the defined
 #set of virtual devices. Their states are set for the initial set-up required
 #for discoveryRequest call.
+
+#Official c2c-arrival-2 Device
+d1_c2c_arrival_2 = SchemaDevice(
+    'd1_c2c_arrival_2',
+    'd1_c2c_arrival_2',
+    'c2c-arrival-2',
+    '001')
+d1_c2c_arrival_2.set_mn(
+    'C2C Arrival 2 type - Presence, Battery, Tone',
+    'Model X1')
+d1_c2c_arrival_2.set_context(
+    'Living',
+    ['Presence'],
+    ['presence-sensor'])
+d1_c2c_arrival_2.set_state(
+    'st.presenceSensor',
+    'presence',
+    'present')
+d1_c2c_arrival_2.set_state(
+    'st.battery',
+    'battery',
+    100)
+# The capability TONE has no state attributes. It has only one command -> BEEP
+# d1_c2c_arrival_2.set_state(
+#     'st.tone',
+#     'switch',
+#     'on')
 
 #Switch 1 has only switch capability
 switch_1 = SchemaDevice(  # Device info
     'switch_1',
     'switch_1',
     'c2c-switch',
-    '001')
+    '101')
 switch_1.set_mn(  # Manufacturer info
     'Switch Mn Example',
     'Model X1')
@@ -27,7 +69,7 @@ switch_2 = SchemaDevice(  # Device info
     'switch_2',
     'switch_2',
     'c2c-switch',
-    '002')
+    '102')
 switch_2.set_mn(  # Manufacturer info
     'Switch Mn Example',
     'Model X1')
@@ -45,7 +87,7 @@ temp_sensor_1 = SchemaDevice(
     'temp_sensor_1',
     'temp_sensor_1',
     'c2c-contact',
-    '003')
+    '103')
 temp_sensor_1.set_mn(
     'Temp-Contact Sensor Manufacturer',
     'Model T1')
@@ -72,7 +114,7 @@ color_bulb_1 = SchemaDevice(
     'color_bulb_1',
     'color_bulb_1',
     'c2c-rgb-color-bulb',
-    '004')
+    '104')
 color_bulb_1.set_mn(
     'Color Bulb Manufacturer',
     'Model C1')
@@ -106,7 +148,7 @@ fan_control_1 = SchemaDevice(
     'fan_control_1',
     'fan_control_1',
     'c2c-fan-controller-4speed',
-    '005')
+    '105')
 fan_control_1.set_mn(
     'Fan Control Manufacturer',
     'Model F1')
@@ -124,4 +166,4 @@ fan_control_1.set_state(
     4)
 
 #Exporting all the devices in a variable for in-memory operations
-declared_devices = [switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]
+declared_devices = [d1_c2c_arrival_2, switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]

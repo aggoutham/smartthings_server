@@ -1,8 +1,10 @@
 import requests, sys
 from uuid import uuid4
 from random import randint, uniform
+import json
 
-fuzzing_url = "https://iotpi.aplayerscreed.com/vdev_py/fuzzer"
+fuzzing_url = "https://iotpi.aplayerscreed.com/smartthings/fuzzer"
+usual_url = "https://iotpi.aplayerscreed.com/smartthings/"
 
 reqObj = {}
 reqObj["headers"] = {}
@@ -18,9 +20,16 @@ sampleCommandObj["capability"] = ""
 sampleCommandObj["command"] = ""
 sampleCommandObj["arguments"] = []
 
-### Sending requesto to Flask App
+### Sending request to Flask App Fuzzing context
 def hiturl(payload):
     res = requests.post(fuzzing_url, json=payload)
+    print('response from server:')
+    print(res.text)
+    return res.text
+
+### Sending request to Flask App Smartthings context
+def hitsmturl(payload):
+    res = requests.post(usual_url, json=payload)
     print('response from server:')
     print(res.text)
     return res.text
@@ -43,9 +52,11 @@ def main():
     req["devices"][0]["commands"].append(commandObj)
     res = hiturl(req)
     # loop call
-    for i in range(1, 100):
+    for i in range(1, 10):
         req["devices"][0]["commands"][0]["arguments"] = [i]
         res = hiturl(req)
+    
+    reset_all_states()
 
     # temp_sensor_1
     # st.contactSensor
@@ -65,6 +76,8 @@ def main():
         req["devices"][0]["commands"][0]["command"] = randStr
         res = hiturl(req)
     
+    reset_all_states()
+
     # st.temperatureMeasurement
     # Fuzz temperature sensor capability
     req = dict(reqObj)
@@ -77,8 +90,10 @@ def main():
     res = hiturl(req)
     # loop call
     for i in range(1, 100):
-        req["devices"][0]["commands"][0]["command"] = randint(-460, 10000)
+        req["devices"][0]["commands"][0]["command"] = uniform(-460, 10000)
         res = hiturl(req)
+
+    reset_all_states()
 
     # st.battery
     # Fuzz battery level capability
@@ -94,6 +109,8 @@ def main():
     for i in range(1, 100):
         req["devices"][0]["commands"][0]["command"] = randint(-100, 200)
         res = hiturl(req)
+
+    reset_all_states()
 
     # switch_1
     # st.switch
@@ -113,6 +130,8 @@ def main():
         req["devices"][0]["commands"][0]["command"] = randStr
         res = hiturl(req)
 
+    reset_all_states()
+
     # color_bulb_1
     # st.switchLevel
     # Fuzz dimmer level capability
@@ -128,6 +147,8 @@ def main():
     for i in range(1, 101):
         req["devices"][0]["commands"][0]["arguments"][0] = i
         res = hiturl(req)
+
+    reset_all_states()
 
     # st.colorControl
     # Fuzz color control capability by setting hue and saturation individually
@@ -150,6 +171,8 @@ def main():
         req["devices"][0]["commands"][0]["arguments"][0] = randint(0, 100)
         res = hiturl(req)
 
+    reset_all_states()
+
 # Generate random ASCII string
 def random_string(length): 
     randStr = ""
@@ -157,5 +180,11 @@ def random_string(length):
         randStr = randStr + chr(randint(0, 127))
         # print(randStr)
     return randStr
+
+def reset_all_states():
+    payload1 = {"headers":{"schema":"st-schema","version":"1.0","interactionType":"discoveryRequest","requestId":"9BAED2DE-4B98-4A9D-9CB5-624D04F52A0D"},"authentication":{"tokenType":"Bearer","token":"ACCT-0Ya0Tx"}}
+    hitsmturl(payload1)
+    payload2 = {'headers':{'schema':'st-schema','version':'1.0','interactionType':'stateCallback','requestId':'9BAED2DE-4B98-4A9D-9CB5-624D04F52A0D'},'authentication':{'tokenType':'Bearer','token':'ACCT-0Ya0Tx'}}
+    hiturl(payload2)
 
 main()

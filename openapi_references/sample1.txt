@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: samsung-native-stateCallBacks
+  version: 1.0.0
+servers:
+  - url: https://c2c-us.smartthings.com
+paths:
+  /device/events:
+    post:
+      tags:
+        - General
+      summary: Switch only state callBack
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                headers:
+                  version: '1.0'
+                  requestId: 5c15e638-191d-41ec-99cc-3000a8711d1b
+                  interactionType: stateCallback
+                  schema: st-schema
+                deviceState:
+                  - deviceCookie:
+                      cookie: 'NULL'
+                    externalDeviceId: switch_1
+                    states:
+                      - capability: st.switch
+                        component: main
+                        value: 'on'
+                        attribute: switch
+                authentication:
+                  token: >-
+                    eyJhbGciOiJIUzM4NCJ9.ZGU1YjZjNmEtYjI5MS00NjlmLWE4ZDUtOWNmNWEzNGI3ZjQ5OnN5bnNlYy1zY2hlbWEtZGV2aWNlcw.BcC8CdAzAt3jQTBHSYCKrToTNc7Esdq_0UruwiQ_MkOYnDy5HkIBth89Ue8t3I6y
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
