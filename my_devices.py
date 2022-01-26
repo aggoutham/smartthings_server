@@ -15,10 +15,6 @@ from stschema import SchemaDevice
 # SET STATE : REFER TO :- https://developer-preview.smartthings.com/docs/devices/capabilities/capabilities-reference/
 
 
-#With the help of Smartthings Python SDK module, following are the defined
-#set of virtual devices. Their states are set for the initial set-up required
-#for discoveryRequest call.
-
 #Official c2c-arrival-2 Device
 d1_c2c_arrival_2 = SchemaDevice(
     'd1_c2c_arrival_2',
