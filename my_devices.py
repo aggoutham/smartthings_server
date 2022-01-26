@@ -65,6 +65,60 @@ d2_c2c_button_4.set_state(
     'battery',
     100)
 
+
+#Official c2c-camera-2 Device
+d3_c2c_camera_2 = SchemaDevice(
+    'd3_c2c_camera_2',
+    'd3_c2c_camera_2',
+    'c2c-camera-2',
+    '003')
+d3_c2c_camera_2.set_mn(
+    'C2C Camera 2 type - Image Capture',
+    'Model D003')
+d3_c2c_camera_2.set_context(
+    'Living',
+    ['Cameras'],
+    ['camera'])
+d3_c2c_camera_2.set_state(
+    'st.imageCapture',
+    'captureTime',
+    '19700101T020000-0500')
+d3_c2c_camera_2.set_state(
+    'st.imageCapture',
+    'encrypted',
+    False)
+d3_c2c_camera_2.set_state(
+    'st.imageCapture',
+    'image',
+    'https://pixabay.com/photos/tree-sunset-clouds-sky-silhouette-736885/')
+
+
+#Official c2c-carbon-monoxide-2 Device
+d4_c2c_carbon_monoxide_2 = SchemaDevice(
+    'd4_c2c_carbon_monoxide_2',
+    'd4_c2c_carbon_monoxide_2',
+    'c2c-carbon-monoxide-2',
+    '004')
+d4_c2c_carbon_monoxide_2.set_mn(
+    'C2C Carbon Monoxide 2 type - Carbon Monoxide Detector, Battery, Tamper Alert',
+    'Model D004')
+d4_c2c_carbon_monoxide_2.set_context(
+    'Living',
+    ['Carbon Monoxide Sensors'],
+    ['generic-sensor'])
+d4_c2c_carbon_monoxide_2.set_state(
+    'st.carbonMonoxideDetector',
+    'carbonMonoxide',
+    'clear')
+d4_c2c_carbon_monoxide_2.set_state(
+    'st.battery',
+    'battery',
+    100)
+d4_c2c_carbon_monoxide_2.set_state(
+    'st.tamperAlert',
+    'tamper',
+    'clear')
+
 #Switch 1 has only switch capability
 switch_1 = SchemaDevice(  # Device info
     'switch_1',
@@ -185,4 +239,4 @@ fan_control_1.set_state(
     4)
 
 #Exporting all the devices in a variable for in-memory operations
-declared_devices = [d1_c2c_arrival_2, d2_c2c_button_4, switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]
+declared_devices = [d1_c2c_arrival_2, d2_c2c_button_4, d3_c2c_camera_2, d4_c2c_carbon_monoxide_2, switch_1, switch_2, temp_sensor_1, color_bulb_1, fan_control_1]
