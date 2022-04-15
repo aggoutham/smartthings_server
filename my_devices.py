@@ -134,8 +134,8 @@ d5_c2c_color_temperature_bulb.set_mn(
     'Model D005')
 d5_c2c_color_temperature_bulb.set_context(
     'Living',
-    ['Switch and its levels'],
-    ['Color Temperature'])
+    ['light'],
+    ['light'])
 d5_c2c_color_temperature_bulb.set_state(
     'st.switch',
     'switch',
@@ -143,11 +143,11 @@ d5_c2c_color_temperature_bulb.set_state(
 d5_c2c_color_temperature_bulb.set_state(
     'st.switchLevel',
     'level',
-    '50')
+    50)
 d5_c2c_color_temperature_bulb.set_state(
     'st.colorTemperature',
     'colorTemperature',
-    '6500')
+    6500)
 
 
 #Official c2c-contact-2 Device
@@ -161,8 +161,8 @@ d6_c2c_contact_2.set_mn(
     'Model D006')
 d6_c2c_contact_2.set_context(
     'Living',
-    ['Contact Sensor, Battery'],
-    ['Temperature Measurement, Acceleration Sensor'])
+    ['contact-sensor'],
+    ['contact-sensor'])
 d6_c2c_contact_2.set_state(
     'st.contactSensor',
     'contact',
@@ -170,11 +170,12 @@ d6_c2c_contact_2.set_state(
 d6_c2c_contact_2.set_state(
     'st.battery',
     'battery',
-    '50')
+    50)
 d6_c2c_contact_2.set_state(
     'st.temperatureMeasurement',
     'temperature',
-    '70')
+    70,
+    'C')
 d6_c2c_contact_2.set_state(
     'st.accelerationSensor',
     'acceleration',
@@ -192,8 +193,8 @@ d7_c2c_contact_4.set_mn(
     'Model D007')
 d7_c2c_contact_4.set_context(
     'Living',
-    ['Contact Sensor, Door Control'],
-    ['Garage Door Control'])
+    ['contact-sensor'],
+    ['contact-sensor'])
 d7_c2c_contact_4.set_state(
     'st.contactSensor',
     'contact',
@@ -219,8 +220,8 @@ d8_c2c_dimmer_power_energy.set_mn(
     'Model D008')
 d8_c2c_dimmer_power_energy.set_context(
     'Living',
-    ['Switch, Switch Level'],
-    ['Power Meter, Energy Meter'])
+    ['energy-meter'],
+    ['energy-meter'])
 d8_c2c_dimmer_power_energy.set_state(
     'st.switch',
     'switch',
@@ -228,15 +229,15 @@ d8_c2c_dimmer_power_energy.set_state(
 d8_c2c_dimmer_power_energy.set_state(
     'st.switchLevel',
     'level',
-    '50')
+    50)
 d8_c2c_dimmer_power_energy.set_state(
     'st.powerMeter',
     'power',
-    '90')
+    90)
 d8_c2c_dimmer_power_energy.set_state(
     'st.energyMeter',
     'energy',
-    '80')
+    80)
 
 
 #Official c2c-doorbell-2 Device
@@ -250,20 +251,20 @@ d9_c2c_doorbell_2.set_mn(
     'Model D009')
 d9_c2c_doorbell_2.set_context(
     'Living',
-    ['Button, Motion Sensor'],
-    ['Switch, Image Capture'])
+    ['door-bell'],
+    ['door-bell'])
 d9_c2c_doorbell_2.set_state(
     'st.button',
     'button',
-    'held')
+    'pushed')
 d9_c2c_doorbell_2.set_state(
     'st.button',
     'numberOfButtons',
-    '500')
-d9_c2c_doorbell_2.set_state(
-    'st.button',
-    'supportedButtonValues',
-    '500')                                        # asks for array of enum, not sure what array should it be.
+    500)
+# d9_c2c_doorbell_2.set_state(
+#     'st.button',
+#     'supportedButtonValues',
+#     [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26])                                        # asks for array of enum, not sure what array should it be.
 d9_c2c_doorbell_2.set_state(
     'st.motionSensor',
     'motion',
@@ -297,8 +298,8 @@ d10_c2c_fan_controller_4speed.set_mn(
     'Model D0010')
 d10_c2c_fan_controller_4speed.set_context(
     'Living',
-    ['Switch'],
-    ['Fan Speed[1,2,3,4]'])
+    ['fan'],
+    ['fan'])
 d10_c2c_fan_controller_4speed.set_state(
     'st.switch',
     'switch',
@@ -306,7 +307,7 @@ d10_c2c_fan_controller_4speed.set_state(
 d10_c2c_fan_controller_4speed.set_state(
     'st.fanSpeed',
     'fanSpeed',
-    '6700')                                 # Fan speed has commands.
+    6700)                                 # Fan speed has commands.
 
 
 #Official c2c-humidity Device
@@ -320,20 +321,21 @@ d11_c2c_humidity.set_mn(
     'Model D0011')
 d11_c2c_humidity.set_context(
     'Living',
-    ['Relative Humidity Measurement'],
-    ['Battery, Temperature Measurement'])
+    ['air-conditioner'],
+    ['air-conditioner'])
 d11_c2c_humidity.set_state(
     'st.relativeHumidityMeasurement',
     'humidity',
-    '50')
+    50)
 d11_c2c_humidity.set_state(
     'st.battery',
     'battery',
-    '50')
+    50)
 d11_c2c_humidity.set_state(
     'st.temperatureMeasurement',
     'temperature',
-    '70')
+    70,
+    'C')
 
 
 #Official c2c-leak-3 Device
@@ -347,8 +349,8 @@ d12_c2c_leak_3.set_mn(
     'Model D0012')
 d12_c2c_leak_3.set_context(
     'Living',
-    ['Water Sensor, Battery'],
-    ['Temperature Measurement, Tamper Alert'])
+    ['leak-sensor'],
+    ['leak-sensor'])
 d12_c2c_leak_3.set_state(
     'st.waterSensor',
     'water',
@@ -356,11 +358,12 @@ d12_c2c_leak_3.set_state(
 d12_c2c_leak_3.set_state(
     'st.battery',
     'battery',
-    '50')
+    50)
 d12_c2c_leak_3.set_state(
     'st.temperatureMeasurement',
     'temperature',
-    '70')
+    70,
+    'C')
 d12_c2c_leak_3.set_state(
     'st.tamperAlert',
     'tamper',
@@ -378,8 +381,8 @@ d13_c2c_lock_3.set_mn(
     'Model D0013')
 d13_c2c_lock_3.set_context(
     'Living',
-    ['Lock, Battery'],
-    ['Temperature Measurement'])
+    ['smart-lock'],
+    ['smart-lock'])
 d13_c2c_lock_3.set_state(
     'st.lock',
     'lock',
@@ -387,11 +390,12 @@ d13_c2c_lock_3.set_state(
 d13_c2c_lock_3.set_state(
     'st.battery',
     'battery',
-    '50')
+    50)
 d13_c2c_lock_3.set_state(
     'st.temperatureMeasurement',
     'temperature',
-    '70')
+    70,
+    'C')
 
 
 #Official c2c-motion-7 Device
@@ -405,8 +409,8 @@ d14_c2c_motion_7.set_mn(
     'Model D0014')
 d14_c2c_motion_7.set_context(
     'Living',
-    ['Motion Sensor, Battery, Temperature Measurement, Relative Humidity Measurement, Illuminance Measurement'],
-    ['Ultraviolet Index, Power Source, Tamper Alert'])
+    ['motion-sensor'],
+    ['motion-sensor'])
 d14_c2c_motion_7.set_state(
     'st.motionSensor',
     'motion',
@@ -414,23 +418,24 @@ d14_c2c_motion_7.set_state(
 d14_c2c_motion_7.set_state(
     'st.battery',
     'battery',
-    '50')
+    50)
 d14_c2c_motion_7.set_state(
     'st.temperatureMeasurement',
     'temperature',
-    '70')
+    70,
+    'C')
 d14_c2c_motion_7.set_state(
     'st.relativeHumidityMeasurement',
     'humidity',
-    '50')
+    50)
 d14_c2c_motion_7.set_state(
     'st.illuminanceMeasurement',
     'illuminance',
-    '30000')
+    30000)
 d14_c2c_motion_7.set_state(
     'st.ultravioletIndex',
     'ultravioletIndex',
-    '150')
+    150)
 d14_c2c_motion_7.set_state(
     'st.powerSource',
     'powerSource',
@@ -452,20 +457,20 @@ d15_c2c_music_player_2.set_mn(
     'Model D0015')
 d15_c2c_music_player_2.set_context(
     'Living',
-    ['Music Player, Switch'],
-    ['Audio Notification'])
-d15_c2c_music_player_2.set_state(                   # No capability found for Music Player
-    'st.tamperAlert',
-    'tamper',
-    'clear')
+    ['network-audio'],
+    ['network-audio'])
+# d15_c2c_music_player_2.set_state(                   # No capability found for Music Player
+#     'st.tamperAlert',
+#     'tamper',
+#     'clear')
 d15_c2c_music_player_2.set_state(
     'st.switch',
     'switch',
     'on')
-d15_c2c_music_player_2.set_state(                      # No attributes found for Audio Notification
-    'st.audioNotification',                             # Commands found for audio notification
-    'tamper',
-    'clear')
+# d15_c2c_music_player_2.set_state(                      # No attributes found for Audio Notification
+#     'st.audioNotification',                             # Commands found for audio notification
+#     'tamper',
+#     'clear')
 
 
 #Official c2c-rgbw-color-bulb Device
@@ -479,8 +484,8 @@ d16_c2c_rgbw_color_bulb.set_mn(
     'Model D0016')
 d16_c2c_rgbw_color_bulb.set_context(
     'Living',
-    ['Switch, Switch Level'],
-    ['Color Control, Color Temperature'])
+    ['light'],
+    ['light'])
 d16_c2c_rgbw_color_bulb.set_state(
     'st.switch',
     'switch',
@@ -488,7 +493,7 @@ d16_c2c_rgbw_color_bulb.set_state(
 d16_c2c_rgbw_color_bulb.set_state(
     'st.switchLevel',
     'level',
-    '50')
+    50)
 # d16_c2c_rgbw_color_bulb.set_state(
 #     'st.colorControl',
 #     'color',
@@ -496,15 +501,15 @@ d16_c2c_rgbw_color_bulb.set_state(
 d16_c2c_rgbw_color_bulb.set_state(
     'st.colorControl',
     'hue',
-    '50')
+    50)
 d16_c2c_rgbw_color_bulb.set_state(
     'st.colorControl',
     'saturation',
-    '50')
+    50)
 d16_c2c_rgbw_color_bulb.set_state(
     'st.colorTemperature',
     'colorTemperature',
-    '15000')
+    15000)
 
 
 
